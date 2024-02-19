@@ -2,12 +2,10 @@ package com.stoom.ecomm.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
-@Setter
 @Getter
 public class Category {
 
@@ -22,7 +20,24 @@ public class Category {
 
     private Boolean active;
 
+    
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products;
 
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

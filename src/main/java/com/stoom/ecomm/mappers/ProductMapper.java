@@ -7,7 +7,6 @@ import com.stoom.ecomm.entities.Product;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,18 +14,18 @@ import java.util.stream.Collectors;
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
-
-    @Mapping(source = "brandId", target = "brand.id")
-    @Mapping(source = "categoriesId", target = "categories", qualifiedByName = "mapToCategories")
-    Product mapToEntity(CreateProductRequest dto);
-
+    
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updatePartial(@MappingTarget Product product, UpdateProductRequest dto);
 
 
+    @Mapping(source = "brandId", target = "brand.id")
+    @Mapping(source = "categoriesId", target = "categories", qualifiedByName = "mapToCategories")
+    Product mapToEntity(CreateProductRequest dto);
+
     @Named("mapToCategories")
-    default Set<Category> mapToCategories(List<Long> categoryIds) {
+    default Set<Category> mapToCategories(Set<Long> categoryIds) {
         return categoryIds.stream().map(id -> {
             Category category = new Category();
             category.setId(id);

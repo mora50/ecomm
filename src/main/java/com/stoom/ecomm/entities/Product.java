@@ -1,5 +1,6 @@
 package com.stoom.ecomm.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class Product {
 
     private String sku;
 
-    private Boolean isActive;
+    private Boolean active;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -41,7 +42,8 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToMany
+    @JsonIgnoreProperties("products")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),

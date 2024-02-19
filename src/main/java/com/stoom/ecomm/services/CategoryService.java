@@ -27,21 +27,17 @@ public class CategoryService {
     }
 
     public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest) {
-        log.debug("[start] CategoryService - createCategory");
+        log.info("[start] BrandService - creating category {}:", createCategoryRequest);
 
         Category category = categoryMapper.mapToEntity(createCategoryRequest);
 
         Category savedCategory = categoryRepository.save(category);
 
-        var response = categoryMapper.mapToResponse(savedCategory);
-
-        log.debug("[finish] CategoryService - createCategory");
-
-        return response;
+        return categoryMapper.mapToResponse(savedCategory);
     }
 
     public Category updateCategory(PatchCategoryRequest categoryRequest, Long categoryId) {
-        log.debug("[start] CategoryService - updateCategory");
+        log.info("[start] BrandService - updating category {}:", categoryRequest);
 
         Category existingCategory = findCategoryById(categoryId);
         categoryMapper.updatePartial(existingCategory, categoryRequest);
@@ -53,14 +49,12 @@ public class CategoryService {
     }
 
     public PaginatedResponse<Category> findAllCategories(int page, int size) {
-        log.debug("[start] CategoryService - findAllCategories");
 
         Pageable pageable = PageRequest.of(page, size);
+
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
-        log.debug("[finish] CategoryService - findAllCategories");
-
-        return new PaginatedResponse<Category>(
+        return new PaginatedResponse<>(
                 categoryPage.getContent(),
                 categoryPage.isLast(),
                 categoryPage.getTotalPages(),
@@ -74,13 +68,11 @@ public class CategoryService {
     }
 
     public Category findCategoryById(Long categoryId) {
-        log.debug("[start] CategoryService - findCategoryById");
 
-        Category category = categoryRepository.findById(categoryId)
+        log.info("[start] CategoryService - findCategoryById {}:", categoryId);
+
+
+        return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Category not found: " + categoryId));
-
-        log.debug("[finish] CategoryService - findCategoryById");
-
-        return category;
     }
 }

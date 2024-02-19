@@ -26,22 +26,24 @@ public class ProductService {
     }
 
     public Product createProduct(CreateProductRequest createProductRequest) {
-        log.debug("[start] ProductService - createProduct");
+
+        log.info("[start] ProductService - creating product {}: ", createProductRequest);
 
         Product product = productMapper.mapToEntity(createProductRequest);
 
-        Product savedProduct = productRepository.save(product);
-
-        log.debug("[finish] ProductService - createProduct");
-
-        return savedProduct;
+        return productRepository.save(product);
     }
 
     public Product updateProduct(UpdateProductRequest productRequest, Long productId) {
-        log.debug("[start] ProductService - updateProduct");
+
+        log.info("[start] ProductService - update product with Id {}: ", productId);
+
+        log.info("[start] ProductService - update product with data {}: ", productRequest);
 
         Product existingProduct = findProductById(productId);
+
         productMapper.updatePartial(existingProduct, productRequest);
+
         Product updatedProduct = productRepository.save(existingProduct);
 
         log.debug("[finish] ProductService - updateProduct");
@@ -50,12 +52,9 @@ public class ProductService {
     }
 
     public PaginatedResponse<Product> findAllProducts(int page, int size) {
-        log.debug("[start] ProductService - findAllProducts");
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productPage = productRepository.findAll(pageable);
-
-        log.debug("[finish] ProductService - findAllProducts");
+        Page<Product> productPage = productRepository.findByActiveTrue(pageable);
 
         return new PaginatedResponse<>(
                 productPage.getContent(),
@@ -70,14 +69,56 @@ public class ProductService {
         );
     }
 
+
+    public PaginatedResponse<Product> findProductByCategoryId(Long categoryId, int page, int size) {
+
+        var pageable = PageRequest.of(page, size);
+
+        var response = productRepository.findProductsByCategoryId(categoryId, pageable);
+
+        if (response == null) {
+            throw new NotFoundException("Product not found by category: " + categoryId);
+        }
+
+        return new PaginatedResponse<>(response.getContent(),
+                response.isLast(),
+                response.getTotalPages(),
+                response.getTotalElements(),
+                response.isFirst(),
+                response.getSize(),
+                response.getNumber(),
+                response.isEmpty(),
+                response.getNumberOfElements());
+
+    }
+
+    public PaginatedResponse<Product> findProductByBrandId(Long brandId, int page, int size) {
+
+        var pageable = PageRequest.of(page, size);
+
+        var response = productRepository.findProductsByBrandId(brandId, pageable);
+
+        if (response == null) {
+            throw new NotFoundException("Product not found by brandId: " + brandId);
+        }
+
+        return new PaginatedResponse<>(response.getContent(),
+                response.isLast(),
+                response.getTotalPages(),
+                response.getTotalElements(),
+                response.isFirst(),
+                response.getSize(),
+                response.getNumber(),
+                response.isEmpty(),
+                response.getNumberOfElements());
+
+    }
+
     public Product findProductById(Long productId) {
-        log.debug("[start] ProductService - findProductById");
 
-        Product product = productRepository.findById(productId)
+        log.info("[start] ProductService - finding the product with Id {}: ", productId);
+
+        return productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found: " + productId));
-
-        log.debug("[finish] ProductService - findProductById");
-
-        return product;
     }
 }

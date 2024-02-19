@@ -24,33 +24,31 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product createProduct(@RequestBody @Valid CreateProductRequest createProductRequest) {
-        log.debug("[start] ProductController - createProduct");
-        var response = productService.createProduct(createProductRequest);
-        log.debug("[finish] ProductController - createProduct");
-        return response;
+        return productService.createProduct(createProductRequest);
     }
 
     @PatchMapping("/{productId}")
     public Product updateProduct(@RequestBody @Valid UpdateProductRequest productRequest, @PathVariable Long productId) {
-        log.debug("[start] ProductController - updateProduct");
-        var response = productService.updateProduct(productRequest, productId);
-        log.debug("[finish] ProductController - updateProduct");
-        return response;
+        return productService.updateProduct(productRequest, productId);
     }
 
     @GetMapping
     public PaginatedResponse<Product> findAllProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
-        log.debug("[start] ProductController - findAllProducts");
-        var response = productService.findAllProducts(page, size);
-        log.debug("[finish] ProductController - findAllProducts");
-        return response;
+        return productService.findAllProducts(page, size);
     }
 
     @GetMapping("/{productId}")
     public Product findProductById(@PathVariable Long productId) {
-        log.debug("[start] ProductController - findProductById");
-        var response = productService.findProductById(productId);
-        log.debug("[finish] ProductController - findProductById");
-        return response;
+        return productService.findProductById(productId);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public PaginatedResponse<Product> findProductByCategoryId(@PathVariable Long categoryId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
+        return productService.findProductByCategoryId(categoryId, page, size);
+    }
+
+    @GetMapping("/brand/{brandId}")
+    public PaginatedResponse<Product> findProductByBrandId(@PathVariable Long brandId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
+        return productService.findProductByBrandId(brandId, page, size);
     }
 }

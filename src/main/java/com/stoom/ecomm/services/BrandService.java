@@ -23,6 +23,7 @@ public class BrandService {
     @Autowired
     public BrandService(BrandRepository brandRepository, BrandMapper brandMapper) {
         this.brandRepository = brandRepository;
+
         this.brandMapper = brandMapper;
     }
 
@@ -37,7 +38,8 @@ public class BrandService {
 
     public Brand updateBrand(PatchBrandRequest brandRequest, Long brandId) {
 
-        log.info("[start] BrandService - update brand with Id: {}", brandId);
+        log.info("[start] BrandService - update brand with Id {}: ", brandId);
+        log.info("[start] BrandService - update brand with data {}: ", brandRequest);
 
         var existBrand = findBrandById(brandId);
 
@@ -48,13 +50,11 @@ public class BrandService {
 
     public PaginatedResponse<Brand> findAllBrand(int page, int size) {
 
-        log.info("[start] BrandService - Find all brands");
-
         Pageable pageable = PageRequest.of(page, size);
 
         var response = brandRepository.findAll(pageable);
 
-        return new PaginatedResponse<Brand>(
+        return new PaginatedResponse<>(
                 response.getContent(),
                 response.isLast(),
                 response.getTotalPages(),
@@ -69,7 +69,7 @@ public class BrandService {
 
     public Brand findBrandById(Long id) {
 
-        log.info("[start] BrandService - finding brand by id: {}", id);
+        log.info("[start] BrandService - finding brand by id: {} ", id);
 
         return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Brand not found: " + id));
     }
