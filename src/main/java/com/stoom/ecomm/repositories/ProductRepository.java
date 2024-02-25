@@ -11,10 +11,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Page<Product> findAllProducts(Pageable page);
+
+    Page<Product> findByActiveTrue(Pageable page);
 
     @Query("""
-                   SELECT DISTINCT p FROM Product p
+                   SELECT p FROM Product p
                                  JOIN p.categories c
                                  WHERE c.id = :categoryId
                                      AND p.active = true

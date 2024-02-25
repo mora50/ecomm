@@ -96,7 +96,7 @@ public class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList);
 
-        when(productRepository.findAllProducts(any(Pageable.class))).thenReturn(productPage);
+        when(productRepository.findByActiveTrue(any(Pageable.class))).thenReturn(productPage);
 
         int page = 0;
 
