@@ -16,10 +16,9 @@ public interface BrandMapper {
 
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateParcial(
+    Brand updateParcial(
             @MappingTarget Brand brand,
             PatchBrandRequest dto
     );
 
-    CreateBrandRequest mapToDTO(Brand entity);
 }

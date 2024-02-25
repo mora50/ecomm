@@ -2,7 +2,6 @@ package com.stoom.ecomm.services;
 
 import com.stoom.ecomm.dto.request.CreateCategoryRequest;
 import com.stoom.ecomm.dto.request.PatchCategoryRequest;
-import com.stoom.ecomm.dto.response.CategoryResponse;
 import com.stoom.ecomm.entities.Category;
 import com.stoom.ecomm.exceptions.NotFoundException;
 import com.stoom.ecomm.mappers.CategoryMapper;
@@ -26,14 +25,12 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest) {
+    public Category createCategory(CreateCategoryRequest createCategoryRequest) {
         log.info("[start] BrandService - creating category {}:", createCategoryRequest);
 
         Category category = categoryMapper.mapToEntity(createCategoryRequest);
 
-        Category savedCategory = categoryRepository.save(category);
-
-        return categoryMapper.mapToResponse(savedCategory);
+        return categoryRepository.save(category);
     }
 
     public Category updateCategory(PatchCategoryRequest categoryRequest, Long categoryId) {

@@ -1,9 +1,5 @@
 package com.stoom.ecomm.services;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.stoom.ecomm.dto.request.CreateBrandRequest;
 import com.stoom.ecomm.dto.request.PatchBrandRequest;
 import com.stoom.ecomm.entities.Brand;
@@ -11,8 +7,10 @@ import com.stoom.ecomm.exceptions.NotFoundException;
 import com.stoom.ecomm.mappers.BrandMapper;
 import com.stoom.ecomm.repositories.BrandRepository;
 import com.stoom.ecomm.utils.PaginatedResponse;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -53,9 +51,16 @@ public class BrandService {
 
         var response = brandRepository.findAll(pageable);
 
-        return new PaginatedResponse<>(response.getContent(), response.isLast(), response.getTotalPages(),
-                response.getTotalElements(), response.isFirst(), response.getSize(), response.getNumber(),
-                response.isEmpty(), response.getNumberOfElements());
+        return new PaginatedResponse<>(
+                response.getContent(),
+                response.isLast(),
+                response.getTotalPages(),
+                response.getTotalElements(),
+                response.isFirst(),
+                response.getSize(),
+                response.getNumber(),
+                response.isEmpty(),
+                response.getNumberOfElements());
     }
 
     public Brand findBrandById(Long id) {

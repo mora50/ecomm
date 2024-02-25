@@ -3,7 +3,6 @@ package com.stoom.ecomm.mappers;
 
 import com.stoom.ecomm.dto.request.CreateCategoryRequest;
 import com.stoom.ecomm.dto.request.PatchCategoryRequest;
-import com.stoom.ecomm.dto.response.CategoryResponse;
 import com.stoom.ecomm.entities.Category;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -17,10 +16,9 @@ public interface CategoryMapper {
 
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updatePartial(
+    Category updatePartial(
             @MappingTarget Category category,
             PatchCategoryRequest dto
     );
 
-    CategoryResponse mapToResponse(Category entity);
 }
