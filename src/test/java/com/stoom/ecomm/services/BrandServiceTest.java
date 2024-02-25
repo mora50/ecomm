@@ -100,7 +100,7 @@ public class BrandServiceTest {
         List<Brand> brandList = createBrandList();
         Page<Brand> brandPage = new PageImpl<>(brandList);
 
-        when(brandRepository.findAll(any(Pageable.class))).thenReturn(brandPage);
+        when(brandRepository.findByActiveTrue(any(Pageable.class))).thenReturn(brandPage);
 
         PaginatedResponse<Brand> result = brandService.findAllBrand(page, size);
 

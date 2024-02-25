@@ -95,7 +95,7 @@ public class CategoryServiceTest {
         List<Category> categoryList = createCategoryList();
         Page<Category> categoryPage = new PageImpl<>(categoryList);
 
-        when(categoryRepository.findAll(any(Pageable.class))).thenReturn(categoryPage);
+        when(categoryRepository.findByActiveTrue(any(Pageable.class))).thenReturn(categoryPage);
 
         PaginatedResponse<Category> result = categoryService.findAllCategories(page, size);
 
