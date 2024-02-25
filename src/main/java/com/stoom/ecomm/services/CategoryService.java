@@ -49,7 +49,7 @@ public class CategoryService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Category> categoryPage = categoryRepository.findAll(pageable);
+        Page<Category> categoryPage = categoryRepository.findByActiveTrue(pageable);
 
         return new PaginatedResponse<>(
                 categoryPage.getContent(),

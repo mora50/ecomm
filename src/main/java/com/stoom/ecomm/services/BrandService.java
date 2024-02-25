@@ -49,7 +49,7 @@ public class BrandService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        var response = brandRepository.findAll(pageable);
+        var response = brandRepository.findByActiveTrue(pageable);
 
         return new PaginatedResponse<>(
                 response.getContent(),
