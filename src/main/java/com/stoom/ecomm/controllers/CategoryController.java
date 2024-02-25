@@ -41,4 +41,10 @@ public class CategoryController {
     public Category findCategoryById(@PathVariable Long categoryId) {
         return categoryService.findCategoryById(categoryId);
     }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategoryById(id);
+    }
 }

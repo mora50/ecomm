@@ -69,4 +69,15 @@ public class BrandService {
 
         return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Brand not found: " + id));
     }
+
+    public void deleteBrandById(Long id) {
+
+        log.info("[start] BrandService - deleting brand by id: {} ", id);
+
+        if (!brandRepository.existsById(id)) {
+            throw new NotFoundException("Brand not found with ID: " + id);
+        }
+
+        brandRepository.deleteById(id);
+    }
 }

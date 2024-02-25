@@ -72,4 +72,16 @@ public class CategoryService {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Category not found: " + categoryId));
     }
+
+
+    public void deleteCategoryById(Long id) {
+
+        log.info("[start] BrandService - deleting category by id: {} ", id);
+
+        if (!categoryRepository.existsById(id)) {
+            throw new NotFoundException("Category not found with ID: " + id);
+        }
+
+        categoryRepository.deleteById(id);
+    }
 }

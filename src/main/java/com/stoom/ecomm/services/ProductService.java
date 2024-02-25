@@ -54,7 +54,7 @@ public class ProductService {
     public PaginatedResponse<Product> findAllProducts(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productPage = productRepository.findAllProducts(pageable);
+        Page<Product> productPage = productRepository.findByActiveTrue(pageable);
 
         return new PaginatedResponse<>(
                 productPage.getContent(),

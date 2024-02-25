@@ -5,18 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
+@Setter
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "img_url")
     private String imgUrl;
 
+    @Column(name = "active")
     private Boolean active;
 }
