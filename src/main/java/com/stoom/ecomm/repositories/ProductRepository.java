@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Page<Product> findByActiveTrue(Pageable page);
+    Page<Product> findAllProducts(Pageable page);
 
     @Query("""
                    SELECT DISTINCT p FROM Product p

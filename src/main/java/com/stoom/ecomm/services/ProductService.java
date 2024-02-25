@@ -42,7 +42,7 @@ public class ProductService {
 
         Product existingProduct = findProductById(productId);
 
-        productMapper.updatePartial(existingProduct, productRequest);
+        productMapper.updatePartial(productRequest, existingProduct);
 
         Product updatedProduct = productRepository.save(existingProduct);
 
@@ -54,7 +54,7 @@ public class ProductService {
     public PaginatedResponse<Product> findAllProducts(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productPage = productRepository.findByActiveTrue(pageable);
+        Page<Product> productPage = productRepository.findAllProducts(pageable);
 
         return new PaginatedResponse<>(
                 productPage.getContent(),

@@ -14,10 +14,12 @@ import java.util.stream.Collectors;
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
-    
-    @Mapping(target = "id", ignore = true)
+
+
+    @Mapping(source = "brandId", target = "brand.id")
+    @Mapping(source = "categoriesId", target = "categories", qualifiedByName = "mapToCategories")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updatePartial(@MappingTarget Product product, UpdateProductRequest dto);
+    Product updatePartial(UpdateProductRequest dto, @MappingTarget Product product);
 
 
     @Mapping(source = "brandId", target = "brand.id")
@@ -26,6 +28,11 @@ public interface ProductMapper {
 
     @Named("mapToCategories")
     default Set<Category> mapToCategories(Set<Long> categoryIds) {
+
+        if (categoryIds == null) {
+            return null;
+        }
+
         return categoryIds.stream().map(id -> {
             Category category = new Category();
             category.setId(id);
