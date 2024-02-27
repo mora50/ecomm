@@ -7,6 +7,7 @@ import com.stoom.ecomm.entities.Brand;
 import com.stoom.ecomm.exceptions.NotFoundException;
 import com.stoom.ecomm.mappers.BrandMapper;
 import com.stoom.ecomm.repositories.BrandRepository;
+import com.stoom.ecomm.services.brand.BrandServiceImpl;
 import com.stoom.ecomm.utils.PaginatedResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class BrandServiceTest {
+public class BrandServiceImplTest {
 
 
     @Mock
@@ -37,7 +38,7 @@ public class BrandServiceTest {
     BrandMapper brandMapper;
 
     @InjectMocks
-    BrandService brandService;
+    BrandServiceImpl brandServiceImpl;
 
 
     @Before
@@ -57,7 +58,7 @@ public class BrandServiceTest {
 
         when(brandMapper.mapToEntity(request)).thenReturn(brandEntity);
 
-        var response = brandService.createBrand(request);
+        var response = brandServiceImpl.createBrand(request);
 
         assertEquals(brandEntity, response);
     }
@@ -76,7 +77,7 @@ public class BrandServiceTest {
 
         when(brandRepository.save(existBrand)).thenReturn(existBrand);
 
-        Brand result = brandService.updateBrand(brandRequest, brandId);
+        Brand result = brandServiceImpl.updateBrand(brandRequest, brandId);
 
         assertEquals(existBrand, result);
 
@@ -88,7 +89,7 @@ public class BrandServiceTest {
         Long brandId = 1L;
         when(brandRepository.findById(brandId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NotFoundException.class, () -> brandService.findBrandById(brandId));
+        Assertions.assertThrows(NotFoundException.class, () -> brandServiceImpl.findBrandById(brandId));
     }
 
 
@@ -102,7 +103,7 @@ public class BrandServiceTest {
 
         when(brandRepository.findByActiveTrue(any(Pageable.class))).thenReturn(brandPage);
 
-        PaginatedResponse<Brand> result = brandService.findAllBrand(page, size);
+        PaginatedResponse<Brand> result = brandServiceImpl.findAllBrand(page, size);
 
 
         assertNotNull(result);
@@ -128,7 +129,7 @@ public class BrandServiceTest {
 
         when(brandRepository.findById(brandId)).thenReturn(Optional.ofNullable(brandEntity));
 
-        var result = brandService.findBrandById(brandId);
+        var result = brandServiceImpl.findBrandById(brandId);
 
         assertEquals(result, brandEntity);
     }

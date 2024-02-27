@@ -7,6 +7,7 @@ import com.stoom.ecomm.entities.Category;
 import com.stoom.ecomm.entities.Product;
 import com.stoom.ecomm.mappers.ProductMapper;
 import com.stoom.ecomm.repositories.ProductRepository;
+import com.stoom.ecomm.services.product.ProductServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -23,13 +24,13 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ProductServiceTest {
+public class ProductServiceImplTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
     private ProductMapper productMapper;
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
 
     @Before
     public void setUp() {
@@ -48,7 +49,7 @@ public class ProductServiceTest {
 
         when(productRepository.save(product)).thenReturn(product);
 
-        Product result = productService.createProduct(request);
+        Product result = productServiceImpl.createProduct(request);
 
         assertNotNull(result);
 
@@ -82,7 +83,7 @@ public class ProductServiceTest {
 
         when(productRepository.save(existingProduct)).thenReturn(existingProduct);
 
-        Product result = productService.updateProduct(updateRequest, productId);
+        Product result = productServiceImpl.updateProduct(updateRequest, productId);
 
         assertEquals(existingProduct, result);
     }
@@ -102,7 +103,7 @@ public class ProductServiceTest {
 
         int size = 3;
 
-        var result = productService.findAllProducts(page, size);
+        var result = productServiceImpl.findAllProducts(page, size);
 
         assertNotNull(result);
         assertEquals(productList.size(), result.content().size());
@@ -129,7 +130,7 @@ public class ProductServiceTest {
         Long categoryId = 1L;
         int page = 0;
         int size = 10;
-        var result = productService.findProductByCategoryId(categoryId, page, size);
+        var result = productServiceImpl.findProductByCategoryId(categoryId, page, size);
 
         int sizeExpected = 3;
 
@@ -159,7 +160,7 @@ public class ProductServiceTest {
         Long brandId = 1L;
         int page = 0;
         int size = 10;
-        var result = productService.findProductByBrandId(brandId, page, size);
+        var result = productServiceImpl.findProductByBrandId(brandId, page, size);
 
         int sizeExpected = 3;
 
@@ -187,7 +188,7 @@ public class ProductServiceTest {
 
         when(productRepository.findById(productId)).thenReturn(Optional.ofNullable(product));
 
-        var result = productService.findProductById(productId);
+        var result = productServiceImpl.findProductById(productId);
 
         assertEquals(result, product);
     }

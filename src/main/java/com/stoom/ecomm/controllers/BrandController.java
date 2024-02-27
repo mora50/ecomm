@@ -3,7 +3,7 @@ package com.stoom.ecomm.controllers;
 import com.stoom.ecomm.dto.request.CreateBrandRequest;
 import com.stoom.ecomm.dto.request.PatchBrandRequest;
 import com.stoom.ecomm.entities.Brand;
-import com.stoom.ecomm.services.BrandService;
+import com.stoom.ecomm.services.brand.BrandService;
 import com.stoom.ecomm.utils.PaginatedResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,8 +30,10 @@ public class BrandController {
     }
 
     @GetMapping
-    public PaginatedResponse<Brand> findAllBrads(@RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "2") int size) {
+    public PaginatedResponse<Brand> findAllBrads(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size
+    ) {
         return brandService.findAllBrand(page, size);
     }
 
@@ -39,10 +41,5 @@ public class BrandController {
     public Brand findBrandById(@PathVariable Long brandId) {
         return brandService.findBrandById(brandId);
     }
-
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBrand(@PathVariable Long id) {
-        brandService.deleteBrandById(id);
-    }
+    
 }

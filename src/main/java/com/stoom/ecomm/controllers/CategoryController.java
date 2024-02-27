@@ -3,7 +3,7 @@ package com.stoom.ecomm.controllers;
 import com.stoom.ecomm.dto.request.CreateCategoryRequest;
 import com.stoom.ecomm.dto.request.PatchCategoryRequest;
 import com.stoom.ecomm.entities.Category;
-import com.stoom.ecomm.services.CategoryService;
+import com.stoom.ecomm.services.category.CategoryService;
 import com.stoom.ecomm.utils.PaginatedResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -32,8 +32,10 @@ public class CategoryController {
     }
 
     @GetMapping
-    public PaginatedResponse<Category> findAllCategories(@RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "2") int size) {
+    public PaginatedResponse<Category> findAllCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size
+    ) {
         return categoryService.findAllCategories(page, size);
     }
 
@@ -41,10 +43,5 @@ public class CategoryController {
     public Category findCategoryById(@PathVariable Long categoryId) {
         return categoryService.findCategoryById(categoryId);
     }
-
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategoryById(id);
-    }
+    
 }

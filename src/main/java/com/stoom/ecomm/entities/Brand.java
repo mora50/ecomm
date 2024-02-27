@@ -21,4 +21,5 @@ public class Brand {
 
     @Column(name = "active")
     private Boolean active;
+
 }

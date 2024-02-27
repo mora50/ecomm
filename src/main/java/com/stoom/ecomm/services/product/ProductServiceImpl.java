@@ -1,4 +1,4 @@
-package com.stoom.ecomm.services;
+package com.stoom.ecomm.services.product;
 
 import com.stoom.ecomm.dto.request.CreateProductRequest;
 import com.stoom.ecomm.dto.request.UpdateProductRequest;
@@ -15,16 +15,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
-public class ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
     }
 
+    @Override
     public Product createProduct(CreateProductRequest createProductRequest) {
 
         log.info("[start] ProductService - creating product {}: ", createProductRequest);
@@ -34,6 +35,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    @Override
     public Product updateProduct(UpdateProductRequest productRequest, Long productId) {
 
         log.info("[start] ProductService - update product with Id {}: ", productId);
@@ -51,6 +53,7 @@ public class ProductService {
         return updatedProduct;
     }
 
+    @Override
     public PaginatedResponse<Product> findAllProducts(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -69,7 +72,7 @@ public class ProductService {
         );
     }
 
-
+    @Override
     public PaginatedResponse<Product> findProductByCategoryId(Long categoryId, int page, int size) {
 
         var pageable = PageRequest.of(page, size);
@@ -92,6 +95,7 @@ public class ProductService {
 
     }
 
+    @Override
     public PaginatedResponse<Product> findProductByBrandId(Long brandId, int page, int size) {
 
         var pageable = PageRequest.of(page, size);
@@ -114,11 +118,24 @@ public class ProductService {
 
     }
 
+    @Override
     public Product findProductById(Long productId) {
 
         log.info("[start] ProductService - finding the product with Id {}: ", productId);
 
         return productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found: " + productId));
+    }
+
+    @Override
+    public void deleteProductById(Long productId) {
+
+        log.info("[start] ProductService - deleting product by id: {} ", productId);
+
+        if (!productRepository.existsById(productId)) {
+            throw new NotFoundException("product not found with ID: " + productId);
+        }
+
+        productRepository.deleteById(productId);
     }
 }

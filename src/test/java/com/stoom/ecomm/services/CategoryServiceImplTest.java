@@ -6,6 +6,7 @@ import com.stoom.ecomm.entities.Category;
 import com.stoom.ecomm.exceptions.NotFoundException;
 import com.stoom.ecomm.mappers.CategoryMapper;
 import com.stoom.ecomm.repositories.CategoryRepository;
+import com.stoom.ecomm.services.category.CategoryServiceImpl;
 import com.stoom.ecomm.utils.PaginatedResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CategoryServiceTest {
+public class CategoryServiceImplTest {
 
     @Mock
     CategoryRepository categoryRepository;
@@ -35,7 +36,7 @@ public class CategoryServiceTest {
     CategoryMapper categoryMapper;
 
     @InjectMocks
-    CategoryService categoryService;
+    CategoryServiceImpl categoryServiceImpl;
 
     @Before
     public void setUp() {
@@ -54,7 +55,7 @@ public class CategoryServiceTest {
 
         when(categoryMapper.mapToEntity(request)).thenReturn(categoryEntity);
 
-        Category response = categoryService.createCategory(request);
+        Category response = categoryServiceImpl.createCategory(request);
 
         assertEquals(categoryEntity, response);
     }
@@ -73,7 +74,7 @@ public class CategoryServiceTest {
         when(categoryMapper.updatePartial(existCategory, categoryRequest)).thenReturn(existCategory);
         when(categoryRepository.save(existCategory)).thenReturn(existCategory);
 
-        Category result = categoryService.updateCategory(categoryRequest, categoryId);
+        Category result = categoryServiceImpl.updateCategory(categoryRequest, categoryId);
 
         assertEquals(existCategory, result);
     }
@@ -84,7 +85,7 @@ public class CategoryServiceTest {
         Long categoryId = 1L;
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NotFoundException.class, () -> categoryService.findCategoryById(categoryId));
+        Assertions.assertThrows(NotFoundException.class, () -> categoryServiceImpl.findCategoryById(categoryId));
     }
 
     @Test
@@ -97,7 +98,7 @@ public class CategoryServiceTest {
 
         when(categoryRepository.findByActiveTrue(any(Pageable.class))).thenReturn(categoryPage);
 
-        PaginatedResponse<Category> result = categoryService.findAllCategories(page, size);
+        PaginatedResponse<Category> result = categoryServiceImpl.findAllCategories(page, size);
 
         assertNotNull(result);
         assertEquals(categoryList, result.content());
@@ -119,7 +120,7 @@ public class CategoryServiceTest {
 
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.ofNullable(categoryEntity));
 
-        var result = categoryService.findCategoryById(categoryId);
+        var result = categoryServiceImpl.findCategoryById(categoryId);
 
         assertEquals(result, categoryEntity);
     }

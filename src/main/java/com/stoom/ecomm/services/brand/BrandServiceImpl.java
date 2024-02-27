@@ -1,4 +1,4 @@
-package com.stoom.ecomm.services;
+package com.stoom.ecomm.services.brand;
 
 import com.stoom.ecomm.dto.request.CreateBrandRequest;
 import com.stoom.ecomm.dto.request.PatchBrandRequest;
@@ -14,16 +14,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class BrandService {
+public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
 
-    public BrandService(BrandRepository brandRepository, BrandMapper brandMapper) {
+    public BrandServiceImpl(BrandRepository brandRepository, BrandMapper brandMapper) {
         this.brandRepository = brandRepository;
 
         this.brandMapper = brandMapper;
     }
 
+    @Override
     public Brand createBrand(CreateBrandRequest createBrandRequest) {
 
         log.info("[start] BrandService - creating brand {}:", createBrandRequest);
@@ -33,6 +34,7 @@ public class BrandService {
         return brandRepository.save(brand);
     }
 
+    @Override
     public Brand updateBrand(PatchBrandRequest brandRequest, Long brandId) {
 
         log.info("[start] BrandService - update brand with Id {}: ", brandId);
@@ -45,6 +47,7 @@ public class BrandService {
         return brandRepository.save(existBrand);
     }
 
+    @Override
     public PaginatedResponse<Brand> findAllBrand(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -63,21 +66,12 @@ public class BrandService {
                 response.getNumberOfElements());
     }
 
+    @Override
     public Brand findBrandById(Long id) {
 
         log.info("[start] BrandService - finding brand by id: {} ", id);
 
         return brandRepository.findById(id).orElseThrow(() -> new NotFoundException("Brand not found: " + id));
     }
-
-    public void deleteBrandById(Long id) {
-
-        log.info("[start] BrandService - deleting brand by id: {} ", id);
-
-        if (!brandRepository.existsById(id)) {
-            throw new NotFoundException("Brand not found with ID: " + id);
-        }
-
-        brandRepository.deleteById(id);
-    }
+    
 }

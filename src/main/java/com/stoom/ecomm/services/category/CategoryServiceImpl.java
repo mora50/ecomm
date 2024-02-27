@@ -1,4 +1,4 @@
-package com.stoom.ecomm.services;
+package com.stoom.ecomm.services.category;
 
 import com.stoom.ecomm.dto.request.CreateCategoryRequest;
 import com.stoom.ecomm.dto.request.PatchCategoryRequest;
@@ -15,16 +15,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
-public class CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
     }
 
+    @Override
     public Category createCategory(CreateCategoryRequest createCategoryRequest) {
         log.info("[start] BrandService - creating category {}:", createCategoryRequest);
 
@@ -33,6 +34,7 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    @Override
     public Category updateCategory(PatchCategoryRequest categoryRequest, Long categoryId) {
         log.info("[start] BrandService - updating category {}:", categoryRequest);
 
@@ -45,6 +47,7 @@ public class CategoryService {
         return updatedCategory;
     }
 
+    @Override
     public PaginatedResponse<Category> findAllCategories(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -64,6 +67,7 @@ public class CategoryService {
         );
     }
 
+    @Override
     public Category findCategoryById(Long categoryId) {
 
         log.info("[start] CategoryService - findCategoryById {}:", categoryId);
@@ -71,17 +75,5 @@ public class CategoryService {
 
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Category not found: " + categoryId));
-    }
-
-
-    public void deleteCategoryById(Long id) {
-
-        log.info("[start] BrandService - deleting category by id: {} ", id);
-
-        if (!categoryRepository.existsById(id)) {
-            throw new NotFoundException("Category not found with ID: " + id);
-        }
-
-        categoryRepository.deleteById(id);
     }
 }
